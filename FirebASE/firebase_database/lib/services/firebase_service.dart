@@ -9,16 +9,23 @@ FirebaseFirestore db = FirebaseFirestore.instance;
 Future <List> getPepole() async {
 
   List users =[];
-  CollectionReference collectionReferenceUsers = db.collection("users");
-  QuerySnapshot  queryUsers = await collectionReferenceUsers.get();
+ // CollectionReference collectionReferenceUsers = db.collection("users");
+  QuerySnapshot  queryUsers = await db.collection("users").get();
 
   // ignore: avoid_function_literals_in_foreach_calls
-  queryUsers.docs.forEach((element) {
-    users.add(element.data());
+  //queryUsers.docs.forEach((element) {
+   // users.add(element.data());
 
-  });
+ // });
+  for(var doc in queryUsers.docs){
+     final Map<String,dynamic> data = doc.data() as Map<String,dynamic>;
+     final miUser={
+        "name":data["name"],
+        "uid":doc.id,
+     };
+     users.add(miUser);
 
-  await Future.delayed(const Duration(seconds:1) );
+  }
 
   return users;
 
@@ -30,6 +37,16 @@ Future <void> addUsers(String name, String dpi,String tel) async{
 
 }
 
+//!ACTUALIZAR LA BASE DE DATOS******************************************
+
 Future<void> updateUsers(String uid, String newName) async{
-    await db.collection("users").doc(uid).update({"name":newName});
+    await db.collection("users").doc(uid).set({"name":newName});
+
+}
+
+//!BORRAR DATA FIREBASE----------------------------------------
+
+Future<void> deleteUser(String uid) async{
+    await db.collection("users").doc(uid).delete();
+
 }

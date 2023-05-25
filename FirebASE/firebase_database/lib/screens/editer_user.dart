@@ -1,4 +1,6 @@
 //import 'package:firebase_database/services/firebase_service.dart';
+// ignore_for_file: avoid_print
+
 import 'package:firebase_database/services/firebase_service.dart';
 import 'package:flutter/material.dart';
 
@@ -59,8 +61,13 @@ class _EditerUserState extends State<EditerUser> {
             const  SizedBox(height: 20,),
             ElevatedButton(
               onPressed: () async{
-               await updateUsers(arguments["uid"], nameControler.text);
-
+                //print(arguments["uid"]);
+                //! MINUTMO  12 ********
+              await updateUsers(arguments["uid"], nameControler.text).then((_) {
+              Navigator.pop(context);
+                
+                
+               });
 
                 
               }, 
